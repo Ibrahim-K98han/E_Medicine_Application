@@ -4,26 +4,26 @@ import 'package:flutter/material.dart';
 class ButtonPrimary extends StatelessWidget {
   ButtonPrimary({
     super.key,
-    this.text,
-    this.onTap,
+    required this.text,
+    required this.onTap,
   });
-  final String? text;
-  final Function? onTap;
+  final String text;
+  final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width - 100,
       height: 50,
       child: ElevatedButton(
-        onPressed: onTap!(),
-        child: Text(
-          text!.toUpperCase().toString(),
-        ),
+        onPressed: onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: greenColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
+        ),
+        child: Text(
+          text.toUpperCase(),
         ),
       ),
     );
