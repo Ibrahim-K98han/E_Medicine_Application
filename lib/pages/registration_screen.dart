@@ -12,6 +12,11 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   bool _secureText = true;
   showHide() {
     setState(() {
@@ -66,6 +71,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   width: MediaQuery.of(context).size.width,
                   child: TextField(
+                    controller: fullNameController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Full Name',
@@ -96,6 +102,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   width: MediaQuery.of(context).size.width,
                   child: TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Email Address',
@@ -126,6 +133,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   width: MediaQuery.of(context).size.width,
                   child: TextField(
+                    controller: phoneController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Phone',
@@ -156,6 +164,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   width: MediaQuery.of(context).size.width,
                   child: TextField(
+                    controller: addressController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Home Address',
@@ -186,6 +195,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   width: MediaQuery.of(context).size.width,
                   child: TextField(
+                    controller: passwordController,
                     obscureText: _secureText,
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
