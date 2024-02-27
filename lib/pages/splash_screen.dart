@@ -1,3 +1,4 @@
+import 'package:e_medicine/pages/registration_screen.dart';
 import 'package:e_medicine/widget/button_primary.dart';
 import 'package:e_medicine/widget/general_logo_space.dart';
 import 'package:e_medicine/widget/widget_ilustration.dart';
@@ -22,7 +23,14 @@ class SplashScreen extends StatelessWidget {
               subtitle2: 'whereever and whenever you want',
               child: ButtonPrimary(
                 text: 'get started',
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RegistrationScreen(),
+                    ),
+                  );
+                },
               ),
             ),
           ],
