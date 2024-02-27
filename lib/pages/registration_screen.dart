@@ -1,7 +1,10 @@
+import 'dart:convert';
+
+import 'package:e_medicine/network/api/url_api.dart';
 import 'package:e_medicine/theme.dart';
 import 'package:e_medicine/widget/general_logo_space.dart';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import '../widget/button_primary.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -22,6 +25,56 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     setState(() {
       _secureText = !_secureText;
     });
+  }
+
+  registerSubmit() async {
+    var registerUrl = Uri.parse(BASEURL.apiRegister);
+    final response = await http.post(registerUrl, body: {
+      'fullname': fullNameController.text,
+      'email': emailController.text,
+      'phone': phoneController.text,
+      'address': addressController.text,
+      'password': passwordController.text,
+    });
+    final data = jsonDecode(response.body);
+    print('============$data');
+    int value = data['value'];
+    String message = data['message'];
+    if (value == 1) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Information'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Information'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+      setState(() {});
+    }
   }
 
   @override
@@ -225,7 +278,31 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: ButtonPrimary(
-                    onTap: () {},
+                    onTap: () {
+                      if (fullNameController.text.isEmpty ||
+                          emailController.text.isEmpty ||
+                          phoneController.text.isEmpty ||
+                          addressController.text.isEmpty ||
+                          passwordController.text.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Warning !!'),
+                            content: Text('Please, Enter The Fields'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Cancel'),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        registerSubmit();
+                      }
+                    },
                     text: 'register',
                   ),
                 ),
@@ -242,13 +319,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         fontSize: 15,
                       ),
                     ),
-                    Text(
-                      'Login now',
-                      style: boldTextStyle.copyWith(
-                        color: greenColor,
-                        fontSize: 15,
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Login Now',
+                        style: boldTextStyle.copyWith(
+                          color: greenColor,
+                          fontSize: 15,
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 )
               ],
