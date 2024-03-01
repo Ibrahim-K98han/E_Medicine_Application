@@ -1,3 +1,4 @@
+import 'package:e_medicine/pages/home_screen.dart';
 import 'package:e_medicine/pages/splash_screen.dart';
 import 'package:e_medicine/theme.dart';
 import 'package:e_medicine/widget/button_primary.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: greenColor,
       ),
-      home: SplashScreen(),
+      home: HomeScreen(),
     );
   }
 }

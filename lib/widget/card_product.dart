@@ -21,24 +21,24 @@ class CardProduct extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Image.asset(
+          Image.network(
             imageProduct,
             width: 115,
             height: 76,
           ),
-          const SizedBox(
-            height: 16,
-          ),
-          Text(
-            nameProduct,
-            style: regularTextStyle,
-            textAlign: TextAlign.center,
+          Expanded(
+            flex: 2,
+            child: Text(
+              nameProduct,
+              style: regularTextStyle,
+              textAlign: TextAlign.center,
+            ),
           ),
           const SizedBox(
             height: 8,
           ),
           Text(
-            price,
+            'Price: ${price} Tk',
             style: boldTextStyle,
           )
         ],

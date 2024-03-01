@@ -1,7 +1,13 @@
+import 'dart:convert';
+
+import 'package:e_medicine/network/api/url_api.dart';
+import 'package:e_medicine/network/model/product_model.dart';
 import 'package:e_medicine/theme.dart';
-import 'package:e_medicine/widget/card_category.dart';
 import 'package:e_medicine/widget/card_product.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../widget/card_category.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,6 +17,45 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int? i;
+  bool filter = false;
+  List<CategoryWithProduct> listCategory = [];
+  getCategory() async {
+    listCategory.clear();
+    var urlCategory = Uri.parse(BASEURL.categoryWithProduct);
+    final response = await http.get(urlCategory);
+    if (response.statusCode == 200) {
+      setState(() {
+        final data = jsonDecode(response.body);
+        for (Map<String, dynamic> item in data) {
+          listCategory.add(CategoryWithProduct.fromJson(item));
+        }
+      });
+      getProduct();
+    }
+  }
+
+  List<ProductModel> listProduct = [];
+  getProduct() async {
+    listProduct.clear();
+    var urlProduct = Uri.parse(BASEURL.getProduct);
+    final response = await http.get(urlProduct);
+    if (response.statusCode == 200) {
+      setState(() {
+        final data = jsonDecode(response.body);
+        for (Map<String, dynamic> product in data) {
+          listProduct.add(ProductModel.fromJson(product));
+        }
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    getCategory();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 32,
             ),
             Text(
@@ -88,7 +133,78 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 16,
               ),
             ),
-            
+            const SizedBox(
+              height: 16,
+            ),
+            GridView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: listCategory.length,
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                mainAxisSpacing: 8,
+              ),
+              itemBuilder: (context, index) {
+                final x = listCategory[index];
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      i = index;
+                      filter = true;
+                      print('$i, $filter');
+                    });
+                  },
+                  child: CardCategory(
+                    imageCategory: x.image.toString(),
+                    nameCategory: x.category.toString(),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            filter
+                ? i == 7
+                    ? const Text('Feature on progress')
+                    : GridView.builder(
+                        physics: ClampingScrollPhysics(),
+                        itemCount: listCategory[i!].product!.length,
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                        ),
+                        itemBuilder: (context, index) {
+                          final y = listCategory[i!].product![index];
+                          return CardProduct(
+                            imageProduct: y.image!,
+                            nameProduct: y.name!,
+                            price: y.price!,
+                          );
+                        },
+                      )
+                : GridView.builder(
+                    physics: ClampingScrollPhysics(),
+                    itemCount: listProduct.length,
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                    ),
+                    itemBuilder: (context, index) {
+                      final y = listProduct[index];
+                      return CardProduct(
+                        imageProduct: y.image!,
+                        nameProduct: y.name!,
+                        price: y.price!,
+                      );
+                    },
+                  ),
           ],
         ),
       ),
