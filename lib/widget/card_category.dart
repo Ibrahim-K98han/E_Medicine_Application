@@ -16,7 +16,7 @@ class CardCategory extends StatelessWidget {
       children: [
         Image.asset(
           imageCategory,
-          width: 65,
+          width: 60,
         ),
         Text(
           nameCategory,
