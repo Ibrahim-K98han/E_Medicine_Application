@@ -1,3 +1,4 @@
+import 'package:e_medicine/pages/login_screen.dart';
 import 'package:e_medicine/pages/registration_screen.dart';
 import 'package:e_medicine/widget/button_primary.dart';
 import 'package:e_medicine/widget/general_logo_space.dart';
@@ -27,7 +28,7 @@ class SplashScreen extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RegistrationScreen(),
+                      builder: (context) => LoginScreen(),
                     ),
                   );
                 },
