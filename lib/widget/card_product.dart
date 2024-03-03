@@ -1,5 +1,6 @@
 import 'package:e_medicine/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CardProduct extends StatelessWidget {
   CardProduct({
@@ -14,6 +15,7 @@ class CardProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final priceFormat = NumberFormat('#,#00', 'EN_US');
     return Container(
       decoration: BoxDecoration(
         color: whiteColor,
@@ -38,7 +40,9 @@ class CardProduct extends StatelessWidget {
             height: 8,
           ),
           Text(
-            'Price: ${price} Tk',
+            'Price : ${priceFormat.format(
+              int.parse(price),
+            )} Tk',
             style: boldTextStyle,
           )
         ],

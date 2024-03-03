@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:e_medicine/network/api/url_api.dart';
+import 'package:e_medicine/network/model/pref_profile.dart';
 import 'package:e_medicine/pages/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../theme.dart';
 import '../widget/button_primary.dart';
 import '../widget/general_logo_space.dart';
@@ -35,7 +37,14 @@ class _LoginScreenState extends State<LoginScreen> {
     final data = jsonDecode(response.body);
     int value = data['value'];
     String message = data['message'];
+    String idUser = data['user_id'];
+    String name = data['name'];
+    String email = data['email'];
+    String phone = data['phone'];
+    String address = data['address'];
+    String createdAt = data['created_at'];
     if (value == 1) {
+      savePref(idUser, name, email, phone, address, createdAt);
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -50,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       builder: (context) => MainScreen(),
                     ),
                     (route) => false);
+                print(name);
               },
               child: Text('OK'),
             ),
@@ -75,6 +85,25 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       setState(() {});
     }
+  }
+
+  savePref(
+    String idUser,
+    String name,
+    String email,
+    String phone,
+    String address,
+    String createdAt,
+  ) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      sharedPreferences.setString(PrefProfile.idUser, idUser);
+      sharedPreferences.setString(PrefProfile.name, name);
+      sharedPreferences.setString(PrefProfile.email, email);
+      sharedPreferences.setString(PrefProfile.phone, phone);
+      sharedPreferences.setString(PrefProfile.address, address);
+      sharedPreferences.setString(PrefProfile.createdAt, createdAt);
+    });
   }
 
   @override

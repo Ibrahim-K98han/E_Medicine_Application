@@ -3,7 +3,7 @@ class CategoryWithProduct {
   String? category;
   String? image;
   String? status;
-  List<Product>? product;
+  List<ProductModel>? product;
 
   CategoryWithProduct({
     this.idCategory,
@@ -19,9 +19,9 @@ class CategoryWithProduct {
     image = json['image'];
     status = json['status'];
     if (json['product'] != null) {
-      product = <Product>[];
+      product = <ProductModel>[];
       json['product'].forEach((v) {
-        product!.add(new Product.fromJson(v));
+        product!.add(new ProductModel.fromJson(v));
       });
     }
   }
