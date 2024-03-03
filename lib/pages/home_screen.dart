@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:e_medicine/network/api/url_api.dart';
 import 'package:e_medicine/network/model/product_model.dart';
+import 'package:e_medicine/pages/details_product_screen.dart';
+import 'package:e_medicine/pages/search_product_screen.dart';
 import 'package:e_medicine/theme.dart';
 import 'package:e_medicine/widget/card_product.dart';
 import 'package:flutter/material.dart';
@@ -98,27 +100,38 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 24,
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 5,
-              ),
-              height: 55,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: const Color(0xffe4faf0),
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: Color(0xffb1d8b2),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchProductScreen(),
                   ),
-                  hintText: 'Search Medicine...',
-                  hintStyle: regularTextStyle.copyWith(
-                    color: const Color(
-                      0xffb0d8b2,
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 5,
+                ),
+                height: 55,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color(0xffe4faf0),
+                ),
+                child: TextField(
+                  enabled: false,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    prefixIcon: const Icon(
+                      Icons.search,
+                      color: Color(0xffb1d8b2),
+                    ),
+                    hintText: 'Search Medicine...',
+                    hintStyle: regularTextStyle.copyWith(
+                      color: const Color(
+                        0xffb0d8b2,
+                      ),
                     ),
                   ),
                 ),
@@ -198,10 +211,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     itemBuilder: (context, index) {
                       final y = listProduct[index];
-                      return CardProduct(
-                        imageProduct: y.image!,
-                        nameProduct: y.name!,
-                        price: y.price!,
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailsProductScreen(productModel: y),
+                            ),
+                          );
+                        },
+                        child: CardProduct(
+                          imageProduct: y.image!,
+                          nameProduct: y.name!,
+                          price: y.price!,
+                        ),
                       );
                     },
                   ),

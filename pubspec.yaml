@@ -38,6 +38,7 @@ dependencies:
   google_fonts: 
   http:
   shared_preferences: 
+  intl: 
 
 
 dev_dependencies:

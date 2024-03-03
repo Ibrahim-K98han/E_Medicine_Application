@@ -1,16 +1,16 @@
 import 'package:e_medicine/theme.dart';
 import 'package:flutter/material.dart';
 
-class WidgetIlustraion extends StatelessWidget {
-  const WidgetIlustraion({
+class WidgetIllustration extends StatelessWidget {
+  const WidgetIllustration({
     super.key,
-    required this.child,
+    this.child,
     required this.image,
     required this.title,
     required this.subtitle1,
     required this.subtitle2,
   });
-  final Widget child;
+  final Widget? child;
   final String image;
   final String title;
   final String subtitle1;
