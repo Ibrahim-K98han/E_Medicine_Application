@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../network/api/url_api.dart';
 import '../widget/card_product.dart';
+import 'details_product_screen.dart';
 
 class SearchProductScreen extends StatefulWidget {
   const SearchProductScreen({super.key});
@@ -134,10 +135,21 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                     ),
                     itemBuilder: (context, index) {
                       final y = listSearchProduct[index];
-                      return CardProduct(
-                        imageProduct: y.image!,
-                        nameProduct: y.name!,
-                        price: y.price!,
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailsProductScreen(productModel: y),
+                            ),
+                          );
+                        },
+                        child: CardProduct(
+                          imageProduct: y.image!,
+                          nameProduct: y.name!,
+                          price: y.price!,
+                        ),
                       );
                     },
                   ),

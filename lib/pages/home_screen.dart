@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:e_medicine/network/api/url_api.dart';
 import 'package:e_medicine/network/model/product_model.dart';
 import 'package:e_medicine/pages/details_product_screen.dart';
@@ -181,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? i == 7
                     ? const Text('Feature on progress')
                     : GridView.builder(
-                        physics: ClampingScrollPhysics(),
+                        physics: const ClampingScrollPhysics(),
                         itemCount: listCategory[i!].product!.length,
                         shrinkWrap: true,
                         gridDelegate:
@@ -191,16 +190,28 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisSpacing: 8,
                         ),
                         itemBuilder: (context, index) {
+                          // final y = listCategory[i!].product![index];
                           final y = listCategory[i!].product![index];
-                          return CardProduct(
-                            imageProduct: y.image!,
-                            nameProduct: y.name!,
-                            price: y.price!,
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailsProductScreen(productModel: y),
+                                ),
+                              );
+                            },
+                            child: CardProduct(
+                              imageProduct: y.image!,
+                              nameProduct: y.name!,
+                              price: y.price!,
+                            ),
                           );
                         },
                       )
                 : GridView.builder(
-                    physics: ClampingScrollPhysics(),
+                    physics: const ClampingScrollPhysics(),
                     itemCount: listProduct.length,
                     shrinkWrap: true,
                     gridDelegate:
