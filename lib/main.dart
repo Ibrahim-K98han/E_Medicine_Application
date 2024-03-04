@@ -13,10 +13,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: greenColor,
-          appBarTheme: AppBarTheme(
-            backgroundColor: greenColor,
-          )),
+        primaryColor: greenColor,
+        appBarTheme: AppBarTheme(
+          backgroundColor: greenColor,
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: whiteColor,
+          selectedItemColor: greenColor,
+        ),
+      ),
       home: const SplashScreen(),
     );
   }
