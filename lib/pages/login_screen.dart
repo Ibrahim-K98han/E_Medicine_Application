@@ -44,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
     String address = data['address'];
     String createdAt = data['created_at'];
     if (value == 1) {
-      savePref(idUser, name, email, phone, address, createdAt);
       showDialog(
         context: context,
         builder: (context) => AlertDialog(

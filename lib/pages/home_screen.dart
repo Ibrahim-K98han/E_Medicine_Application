@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:e_medicine/network/api/url_api.dart';
 import 'package:e_medicine/network/model/product_model.dart';
+import 'package:e_medicine/pages/cart_screen.dart';
 import 'package:e_medicine/pages/details_product_screen.dart';
 import 'package:e_medicine/pages/search_product_screen.dart';
 import 'package:e_medicine/theme.dart';
 import 'package:e_medicine/widget/card_product.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import '../widget/card_category.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,9 +20,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int? i;
   bool filter = false;
+  bool dataLoadingInProgress = false;
   List<CategoryWithProduct> listCategory = [];
   getCategory() async {
+    dataLoadingInProgress = true;
     listCategory.clear();
+    setState(() {});
     var urlCategory = Uri.parse(BASEURL.categoryWithProduct);
     final response = await http.get(urlCategory);
     if (response.statusCode == 200) {
@@ -32,15 +35,21 @@ class _HomeScreenState extends State<HomeScreen> {
           listCategory.add(CategoryWithProduct.fromJson(item));
         }
       });
+      dataLoadingInProgress = false;
+      setState(() {});
       getProduct();
     }
   }
 
   List<ProductModel> listProduct = [];
   getProduct() async {
+    dataLoadingInProgress = true;
     listProduct.clear();
+
+    setState(() {});
     var urlProduct = Uri.parse(BASEURL.getProduct);
     final response = await http.get(urlProduct);
+
     if (response.statusCode == 200) {
       setState(() {
         final data = jsonDecode(response.body);
@@ -49,6 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     }
+    dataLoadingInProgress = false;
+    setState(() {});
   }
 
   @override
@@ -88,7 +99,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CartScreen(),
+                      ),
+                    );
+                  },
                   icon: Icon(
                     Icons.shopping_cart_outlined,
                     color: greenColor,
@@ -210,36 +228,40 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
                       )
-                : GridView.builder(
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: listProduct.length,
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                    ),
-                    itemBuilder: (context, index) {
-                      final y = listProduct[index];
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  DetailsProductScreen(productModel: y),
+                : dataLoadingInProgress
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : GridView.builder(
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: listProduct.length,
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                        ),
+                        itemBuilder: (context, index) {
+                          final y = listProduct[index];
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailsProductScreen(productModel: y),
+                                ),
+                              );
+                            },
+                            child: CardProduct(
+                              imageProduct: y.image!,
+                              nameProduct: y.name!,
+                              price: y.price!,
                             ),
                           );
                         },
-                        child: CardProduct(
-                          imageProduct: y.image!,
-                          nameProduct: y.name!,
-                          price: y.price!,
-                        ),
-                      );
-                    },
-                  ),
+                      ),
           ],
         ),
       ),
