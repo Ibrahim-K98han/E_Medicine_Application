@@ -31,6 +31,7 @@ class _CartScreenState extends State<CartScreen> {
       phone = sharedPreferences.getString(PrefProfile.phone);
     });
     getCart();
+    cartTotalPrice();
   }
 
   List<CartModel> listCart = [];
@@ -70,6 +71,22 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
+  var sumPrice = "0";
+  int totalPayment = 0;
+  cartTotalPrice() async {
+    var urlTotalPrice = Uri.parse(BASEURL.totalPriceCart + userID!);
+    final response = await http.get(urlTotalPrice);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      String total = data['Total'];
+      setState(() {
+        sumPrice = total;
+        totalPayment = sumPrice == null ? 0 : int.parse(sumPrice) + delivery;
+      });
+      print(sumPrice);
+    }
+  }
+
   @override
   void initState() {
     getPref();
@@ -106,7 +123,7 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       ),
                       Text(
-                        'Tk 180.000',
+                        'Tk ${price.format(int.parse(sumPrice))}',
                         style: boldTextStyle.copyWith(
                           fontSize: 16,
                         ),
@@ -148,7 +165,7 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       ),
                       Text(
-                        'TK $delivery',
+                        'Tk ${price.format(totalPayment)}',
                         style: boldTextStyle.copyWith(
                           fontSize: 16,
                         ),
