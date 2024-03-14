@@ -12,4 +12,6 @@ class BASEURL {
       'http://$ipAddress/e-medicine/update_quantity.php';
   static String totalPriceCart =
       'http://$ipAddress/e-medicine/get_total_price.php?userID=';
+  static String getTotalCart =
+      'http://$ipAddress/e-medicine/total_cart.php?userID=';
 }
