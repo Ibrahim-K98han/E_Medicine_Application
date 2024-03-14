@@ -12,7 +12,8 @@ import 'package:http/http.dart' as http;
 import '../theme.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+  CartScreen(this.method);
+  final VoidCallback method;
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -62,6 +63,7 @@ class _CartScreenState extends State<CartScreen> {
       print(message);
       setState(() {
         getPref();
+        widget.method();
       });
     } else {
       print(message);
@@ -78,7 +80,7 @@ class _CartScreenState extends State<CartScreen> {
     final response = await http.get(urlTotalPrice);
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      String total = data['Total'];
+      String total = data['Total'].toString();
       setState(() {
         sumPrice = total;
         totalPayment = sumPrice == null ? 0 : int.parse(sumPrice) + delivery;

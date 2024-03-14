@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:e_medicine/network/api/url_api.dart';
+import 'package:e_medicine/network/model/pref_profile.dart';
 import 'package:e_medicine/network/model/product_model.dart';
 import 'package:e_medicine/pages/cart_screen.dart';
 import 'package:e_medicine/pages/details_product_screen.dart';
@@ -8,6 +9,7 @@ import 'package:e_medicine/theme.dart';
 import 'package:e_medicine/widget/card_product.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widget/card_category.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       dataLoadingInProgress = false;
       setState(() {});
       getProduct();
+      totalCart();
     }
   }
 
@@ -62,9 +65,31 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
+  String? userID;
+  getPref() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      userID = sharedPreferences.getString(PrefProfile.idUser);
+    });
+  }
+
+  var totalAmount = "0";
+  totalCart() async {
+    var urlGetTotalCart = Uri.parse(BASEURL.getTotalCart + userID!);
+    final respone = await http.get(urlGetTotalCart);
+    if (respone.statusCode == 200) {
+      final data = jsonDecode(respone.body)[0];
+      String total = data['Amount'];
+      setState(() {
+        totalAmount = total;
+      });
+    }
+  }
+
   @override
   void initState() {
     getCategory();
+    getPref();
     super.initState();
   }
 
@@ -98,19 +123,46 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   ],
                 ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CartScreen(),
+                Stack(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CartScreen(totalCart),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.shopping_cart_outlined,
+                        color: greenColor,
                       ),
-                    );
-                  },
-                  icon: Icon(
-                    Icons.shopping_cart_outlined,
-                    color: greenColor,
-                  ),
+                    ),
+                    totalAmount == "0"
+                        ? const SizedBox()
+                        : Positioned(
+                            right: 5,
+                            top: 5,
+                            child: Container(
+                              height: 15,
+                              width: 15,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  totalAmount,
+                                  style: regularTextStyle.copyWith(
+                                    color: whiteColor,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                  ],
                 )
               ],
             ),
