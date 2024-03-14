@@ -14,4 +14,5 @@ class BASEURL {
       'http://$ipAddress/e-medicine/get_total_price.php?userID=';
   static String getTotalCart =
       'http://$ipAddress/e-medicine/total_cart.php?userID=';
+  static String checkout = 'http://$ipAddress/e-medicine/checkout.php';
 }
