@@ -3,6 +3,7 @@ import 'package:e_medicine/network/api/url_api.dart';
 import 'package:e_medicine/network/model/cart_model.dart';
 import 'package:e_medicine/network/model/pref_profile.dart';
 import 'package:e_medicine/pages/main_screen.dart';
+import 'package:e_medicine/pages/success_checkout.dart';
 import 'package:e_medicine/widget/button_primary.dart';
 import 'package:e_medicine/widget/widget_ilustration.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,23 @@ class _CartScreenState extends State<CartScreen> {
       setState(() {
         getPref();
       });
+    }
+  }
+
+  checkout() async {
+    var urlCheckout = Uri.parse(BASEURL.checkout);
+    final response = await http.post(urlCheckout, body: {"idUser": userID});
+    final data = jsonDecode(response.body);
+    int value = data['value'];
+    String message = data['message'];
+    if (value == 1) {
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+        builder: (context) {
+          return SuccessCheckout();
+        },
+      ), (route) => false);
+    } else {
+      print(message);
     }
   }
 
@@ -181,7 +199,9 @@ class _CartScreenState extends State<CartScreen> {
                     width: MediaQuery.of(context).size.width,
                     child: ButtonPrimary(
                       text: 'checkout now',
-                      onTap: () {},
+                      onTap: () {
+                        checkout();
+                      },
                     ),
                   )
                 ],
