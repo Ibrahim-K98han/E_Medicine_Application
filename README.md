@@ -1,16 +1,4 @@
 # e_medicine
 
-A new Flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![IMG-20240322-WA0015](https://github.com/Ibrahim-K98han/E_Medicine_Application/assets/37374226/fb6f090a-f2f9-4b70-b795-d59a16290b5a)
