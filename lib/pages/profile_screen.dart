@@ -1,4 +1,5 @@
 import 'package:e_medicine/network/model/pref_profile.dart';
+import 'package:e_medicine/pages/login_screen.dart';
 import 'package:e_medicine/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  signOut() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.remove(PrefProfile.idUser);
+    sharedPreferences.remove(PrefProfile.name);
+    sharedPreferences.remove(PrefProfile.email);
+    sharedPreferences.remove(PrefProfile.phone);
+    sharedPreferences.remove(PrefProfile.address);
+    sharedPreferences.remove(PrefProfile.createdAt);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
+        (route) => false);
+  }
+
   @override
   void initState() {
     getPref();
@@ -43,9 +60,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   'My Profile',
                   style: regularTextStyle.copyWith(fontSize: 25),
                 ),
-                Icon(
-                  Icons.exit_to_app,
-                  color: greenColor,
+                InkWell(
+                  onTap: () {
+                    signOut();
+                  },
+                  child: Icon(
+                    Icons.exit_to_app,
+                    color: greenColor,
+                  ),
                 )
               ],
             ),

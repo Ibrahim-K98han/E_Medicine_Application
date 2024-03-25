@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var totalAmount = "0";
   totalCart() async {
-    var urlGetTotalCart = Uri.parse(BASEURL.getTotalCart + userID!);
+    var urlGetTotalCart = Uri.parse(BASEURL.getTotalCart + userID.toString());
     final respone = await http.get(urlGetTotalCart);
     if (respone.statusCode == 200) {
       final data = jsonDecode(respone.body)[0];

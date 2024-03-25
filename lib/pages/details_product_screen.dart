@@ -29,7 +29,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
   getPref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
-      userID = sharedPreferences.getString(PrefProfile.idUser)!;
+      userID = sharedPreferences.getString(PrefProfile.idUser);
     });
   }
 
